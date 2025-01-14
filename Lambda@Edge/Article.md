@@ -34,7 +34,7 @@ CloudFront intercepts requests and responses, forwarding them to Lambda@Edge fun
 
 ![Lambda@Edge Diagram](images/lambda-edge.png)
 
-Among its many use cases, Lambda@Edge is an excellent solution for implementing Blue/Green deployments in environments that already use CloudFront, leveraging its capability to modify requests and responses
+Among its many use cases, Lambda@Edge is an excellent solution for implementing Blue/Green deployments in an environment that already uses CloudFront, leveraging its capability to modify requests and responses
 
 It has many strengths : 
 
@@ -55,11 +55,13 @@ But it comes with a set of limitations :
 
 Lambda@Edge defines a handler function that is automatically invoked by AWS in response to specific CloudFront events. AWS passes an event object to the handler, which contains details about the incoming request - and outgoing response depending on the type of trigger. The handler processes this event and can modify the request or response before forwarding it to the origin or back to the viewer
 
-In this example, we use a simple web application where the frontend is served through CloudFront using an S3 bucket. We suppose that the new release is v1.0.2. We use a Lambda@Edge function at the origin request level, that will modify the request object.
+In this example, we use a simple web application where the frontend is served through CloudFront using an S3 bucket. We suppose that the new release is v1.0.2. We use a Lambda@Edge function triggered at the origin request stage.
 
 ![Example Setup Diagram](images/example-setup.png)
 
 A straightforward approach is to use cookies to direct users to specific versions of the application. This method gives control over the audience for the new version and ensures a consistent experience for users within the same session.
+
+![Example 1 Diagram](images/example-1.png)
 
 ```js
 "use strict";
@@ -91,6 +93,8 @@ exports.handler = async (event) => {
 This setup would require to redeploy the Lambda@Edge function for each new release. This is fastidious as propagation delay is not instantaneous within CloudFront. We can remove the need to redeploy the function by leveraging Parameter Store from AWS Systems Manager to know which release to target. We can also add cache to store the release value for two reasons : 
 - to minimize latency caused by calls to SSM
 - to stay within the transaction-per-second limits imposed by SSM.
+
+![Example 2 Diagram](images/example-2.png)
 
 ```js
 "use strict";
