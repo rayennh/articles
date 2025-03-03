@@ -9,11 +9,11 @@ Blue/Green deployment is a strategy in which two nearly identical but distinct e
 
 ![Blue/Green Deployment Diagram](images/blue-green-deployment.png)
 
-This strategy has several advantages : 
+This strategy has several advantages:
 
-- **Minimized downtime** : Users continue to access the application with nearly no interruption during the switch, as there’s no need for server restarts or maintenance windows.
-- **Simplified rollbacks** : If an issue arises after deploying the new version, traffic can easily be redirected back to the blue environment. The rollback process is quick and avoids stressful redeployments.
-- **Reduced risk** : The new version can be tested in its intended production environment before being exposed to live traffic.
+- **Minimized downtime**: Users continue to access the application with nearly no interruption during the switch, as there’s no need for server restarts or maintenance windows.
+- **Simplified rollbacks**: If an issue arises after deploying the new version, traffic can easily be redirected back to the blue environment. The rollback process is quick and avoids stressful redeployments.
+- **Reduced risk**: The new version can be tested in its intended production environment before being exposed to live traffic.
 
 Of course, blue/green deployment comes with its challenges:
 
@@ -25,7 +25,7 @@ Of course, blue/green deployment comes with its challenges:
 As explained in AWS documentation,
 > Lambda@Edge is an extension of AWS Lambda. Lambda@Edge is a compute service that lets you execute functions that customize the content that Amazon CloudFront delivers.
 
-CloudFront intercepts requests and responses, forwarding them to Lambda@Edge functions that can be triggered at four distinct stages : 
+CloudFront intercepts requests and responses, forwarding them to Lambda@Edge functions that can be triggered at four distinct stages:
 
 - When CloudFront receives a request from a viewer (viewer request)
 - Before CloudFront forwards a request to the origin (origin request)
@@ -36,20 +36,19 @@ CloudFront intercepts requests and responses, forwarding them to Lambda@Edge fun
 
 Among its many use cases, Lambda@Edge is an excellent solution for implementing Blue/Green deployments in an environment that already uses CloudFront, leveraging its capability to modify requests and responses
 
-It has many strengths : 
+It has many strengths:
 
-- **Code level logic** : Supports complex conditional logic through code, offering nearly unlimited flexibility and precise testing of the routing behaviour.
-- **Transparent distribution** : Distributes users without re-directs or changing the URL
-- **Low latency** : Scales automatically and process requests at AWS locations close to the viewer which significantly reduces latency
+- **Code level logic**: Supports complex conditional logic through code, offering nearly unlimited flexibility and precise testing of the routing behaviour.
+- **Transparent distribution**: Distributes users without re-directs or changing the URL
+- **Low latency**: Scales automatically and process requests at AWS locations close to the viewer which significantly reduces latency
 
-But it comes with a set of limitations :
+But it comes with a set of limitations:
 
-- **Feature Limitations** : Compared to AWS Lambda, Lambda@Edge has several limitations including : 
-	- **No unified logging** : Cloudwatch logs are placed in whichever region the function executed.
-	- **No environment variables** : The use of an AWS service such as SSM to store runtime configuration can help mitigate the issue.
-	- **No dependencies layer** : Requires bundling dependencies directly with the function code
+- **Feature Limitations**: Compared to AWS Lambda, Lambda@Edge has several limitations including :
+  - **No unified logging**: Cloudwatch logs are placed in whichever region the function executed.
+  - **No environment variables**: The use of an AWS service such as SSM to store runtime configuration can help mitigate the issue.
+  - **No dependencies layer**: Requires bundling dependencies directly with the function code
 - **Lifecycle Complexity**: Not trivial to completely remove once deployed, as changes propagate across edge locations and may take time to be fully invalidated.
-
 
 ## Setup
 
@@ -90,7 +89,8 @@ exports.handler = async (event) => {
 };
 ```
 
-This setup would require to redeploy the Lambda@Edge function for each new release. This is fastidious as propagation delay is not instantaneous within CloudFront. We can remove the need to redeploy the function by leveraging Parameter Store from AWS Systems Manager to know which release to target. We can also add cache to store the release value for two reasons : 
+This setup would require to redeploy the Lambda@Edge function for each new release. This is fastidious as propagation delay is not instantaneous within CloudFront. We can remove the need to redeploy the function by leveraging Parameter Store from AWS Systems Manager to know which release to target. We can also add cache to store the release value for two reasons:
+
 - to minimize latency caused by calls to SSM
 - to stay within the transaction-per-second limits imposed by SSM.
 
@@ -151,7 +151,11 @@ Of course, this example would need to be enriched with proper code structure as 
 
 ## Conclusion
 
-While the approach outlined here works well for basic blue/green deployments with Lambda@Edge, more complex workflows may require additional considerations. 
+While the approach outlined here works well for basic blue/green deployments with Lambda@Edge, more complex workflows may require additional considerations such as:
+
+- **Multi-component management**: Ensuring synchronization across multiple services (backend, databases, microservices, etc.)
+- **Progressive validation**: Implementing staged rollouts with a subset of users before a full switch
+- **CI/CD**: Integrating blue/green deployment into existing CI/CD pipelines and enabling automated rollbacks if needed
 
 To explore alternatives, here’s a comparison table of different solutions for blue/green deployment in AWS.
 
