@@ -1,5 +1,5 @@
 
-# How to setup Blue/Green deployment with AWS Lambda@Edge
+# Blue/Green deployment: How to configure it with AWS Lambda@Edge
 
 When deploying a web application in production, there’s often a need to manage different versions simultaneously, to allow quick and controlled rollback for instance. In this article, we'll look at how to use AWS Lambda@Edge to manage multiple versions of a web application, and how it allows for blue/green deployments.
 
@@ -9,7 +9,7 @@ Blue/Green deployment is a strategy in which two nearly identical but distinct e
 
 ![Blue/Green Deployment Diagram](images/blue-green-deployment.png)
 
-This strategy has several advantages:
+## The Benefits of Blue/Green deployment
 
 - **Minimized downtime**: Users continue to access the application with nearly no interruption during the switch, as there’s no need for server restarts or maintenance windows.
 - **Simplified rollbacks**: If an issue arises after deploying the new version, traffic can easily be redirected back to the blue environment. The rollback process is quick and avoids stressful redeployments.
@@ -36,7 +36,7 @@ CloudFront intercepts requests and responses, forwarding them to Lambda@Edge fun
 
 Among its many use cases, Lambda@Edge is an excellent solution for implementing Blue/Green deployments in an environment that already uses CloudFront, leveraging its capability to modify requests and responses
 
-It has many strengths:
+## The Advantages of Lambda@Edge
 
 - **Code level logic**: Supports complex conditional logic through code, offering nearly unlimited flexibility and precise testing of the routing behaviour.
 - **Transparent distribution**: Distributes users without re-directs or changing the URL
@@ -50,7 +50,7 @@ But it comes with a set of limitations:
   - **No dependencies layer**: Requires bundling dependencies directly with the function code
 - **Lifecycle Complexity**: Not trivial to completely remove once deployed, as changes propagate across edge locations and may take time to be fully invalidated.
 
-## Setup
+## How to configure Lambda@Edge
 
 Lambda@Edge defines a handler function that is automatically invoked by AWS in response to specific CloudFront events. AWS passes an event object to the handler, which contains details about the incoming request - and outgoing response depending on the type of trigger. The handler processes this event and can modify the request or response before forwarding it to the origin or back to the viewer
 
