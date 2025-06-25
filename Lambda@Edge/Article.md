@@ -23,7 +23,7 @@ Of course, blue/green deployment comes with its challenges:
 ## What is AWS Lambda@Edge
 
 As explained in AWS documentation,
-> Lambda@Edge est une extension de AWS Lambda. Lambda@Edge est un service de calcul qui vous permet d'exécuter des fonctions qui personnalisent le contenu diffusé par Amazon CloudFront.
+> Lambda@Edge is an extension of AWS Lambda. Lambda@Edge is a compute service that lets you execute functions that customize the content that Amazon CloudFront delivers.
 
 CloudFront intercepts requests and responses, forwarding them to Lambda@Edge functions that can be triggered at four distinct stages:
 
