@@ -22,14 +22,14 @@ Bien entendu, cette méthode présente aussi certains défis:
 ## Qu’est-ce que AWS Lambda@Edge
 
 Comme l’explique la documentation AWS,
-> Lambda@Edge is an extension of AWS Lambda. Lambda@Edge is a compute service that lets you execute functions that customize the content that Amazon CloudFront delivers.
+> Lambda@Edge est une extension de AWS Lambda. Lambda@Edge est un service de calcul qui vous permet d'exécuter des fonctions qui personnalisent le contenu diffusé par Amazon CloudFront.
 
-CloudFront intercepts requests and responses, forwarding them to Lambda@Edge functions that can be triggered at four distinct stages:
+CloudFront intercepte les requêtes et réponses, les transmettant aux fonctions Lambda@Edge qui peuvent être déclenchées à quatre étapes distinctes:
 
-- When CloudFront receives a request from a viewer (viewer request)
-- Before CloudFront forwards a request to the origin (origin request)
-- When CloudFront receives a response from the origin (origin response)
-- Before CloudFront returns the response to the viewer (viewer response)
+- Lorsqu’une requête est reçue par CloudFront (viewer request)
+- Avant que CloudFront ne la transfère à l’origine (origin request)
+- Lorsqu’une réponse est reçue de l’origine (origin response)
+- Avant que CloudFront ne renvoie la réponse au client (viewer response)
 
 ![Lambda@Edge Diagram](images/lambda-edge.png)
 
