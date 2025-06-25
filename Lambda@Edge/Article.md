@@ -25,12 +25,12 @@ Of course, blue/green deployment comes with its challenges:
 As explained in AWS documentation,
 > Lambda@Edge est une extension de AWS Lambda. Lambda@Edge est un service de calcul qui vous permet d'exécuter des fonctions qui personnalisent le contenu diffusé par Amazon CloudFront.
 
-CloudFront intercepte les requêtes et réponses, les transmettant aux fonctions Lambda@Edge qui peuvent être déclenchées à quatre étapes distinctes:
+CloudFront intercepts requests and responses, forwarding them to Lambda@Edge functions that can be triggered at four distinct stages:
 
-- Lorsqu’une requête est reçue par CloudFront (viewer request)
-- Avant que CloudFront ne la transfère à l’origine (origin request)
-- Lorsqu’une réponse est reçue de l’origine (origin response)
-- Avant que CloudFront ne renvoie la réponse au client (viewer response)
+- When CloudFront receives a request from a viewer (viewer request)
+- Before CloudFront forwards a request to the origin (origin request)
+- When CloudFront receives a response from the origin (origin response)
+- Before CloudFront returns the response to the viewer (viewer response)
 
 ![Lambda@Edge Diagram](images/lambda-edge.png)
 
